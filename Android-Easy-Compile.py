@@ -2,10 +2,44 @@
 # -*- coding: utf-8 -*- 
 
 import os
+import json
+from playsound import playsound
+import threading
+
 column_ = 45
-os.system('title = Android-Easy-Compile   v0.01   by Aaron Feng')
+os.system('title = Android-Easy-Compile   v0.05   by Aaron Feng')
+
+def ReadSettings():
+	default_values = {'NotificationSound':'ON'}
+	current_dir = os.path.dirname(os.path.abspath(__file__))
+	settingPath = current_dir+'\\'+'Android-Easy-Compile-setting'
+	if os.path.exists(settingPath) == False:
+		with open('Android-Easy-Compile-setting','w+') as f:
+			json.dump(default_values,f)
+		return default_values
+	else:
+		settings_values = {}
+		with open('Android-Easy-Compile-setting','r+') as f:
+			settings_values = json.load(f)
+		if len(settings_values) != len(default_values):
+			with open('Android-Easy-Compile-setting','w+') as f:
+				json.dump(default_values,f)
+			return default_values
+		else:
+			return settings_values
+
+
+class Play_Notification_Sound_Thread (threading.Thread):
+	def __init__(self):
+		threading.Thread.__init__(self)
+        
+	def run(self):
+		playsound('NotificationSound.mp3')
+		
 
 while True:
+	settings_values = ReadSettings()
+	NotificationSound = settings_values['NotificationSound']
 	print('-'*column_)
 	print(' 借助ADB对安卓手机的APP进行本地编译优化')
 	print('')
@@ -20,8 +54,10 @@ while True:
 	print(' 3. 对所有应用进行 Speed 编译')
 	print('')
 	print(' 4. 如何在设备上启用 adb 调试')
+	print('')
+	print(' 5. 提示音 : '+NotificationSound)
 	print('-'*column_)
-	print('( 1 / 2 / 3 / 4 )')
+	print('( 1 / 2 / 3 / 4 / 5 )')
 	choice_ = input().strip(' ')
 	
 	if choice_ == '1':
@@ -43,6 +79,11 @@ while True:
 		print('编译中, 请耐心等待....')
 		os.system('adb shell < Everything.txt')
 		os.system('cls')
+		
+		if NotificationSound == 'ON':
+			thread_Notification=Play_Notification_Sound_Thread()
+			thread_Notification.start()
+		
 		print('')
 		print('编译完成!!')
 		print('按 Enter 键以继续.')
@@ -60,6 +101,9 @@ while True:
 		print('编译中, 请耐心等待....')
 		os.system('adb shell < Speed.txt')
 		os.system('cls')
+		if NotificationSound == 'ON':
+			thread_Notification=Play_Notification_Sound_Thread()
+			thread_Notification.start()
 		print('')
 		print('编译完成!!')
 		print('按 Enter 键以继续.')
@@ -84,6 +128,20 @@ while True:
 		print('')
 		print('按 Enter 键以继续.')
 		input()
+		os.system('cls')
+	
+	elif choice_ == '5':
+		os.system('cls')
+		
+		if settings_values['NotificationSound']=='ON':
+			settings_values['NotificationSound']='OFF'
+			with open('Android-Easy-Compile-setting','w+') as f:
+				json.dump(settings_values,f)
+		elif settings_values['NotificationSound']=='OFF':
+			settings_values['NotificationSound']='ON'
+			with open('Android-Easy-Compile-setting','w+') as f:
+				json.dump(settings_values,f)
+		
 		os.system('cls')
 	
 	else:
