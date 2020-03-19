@@ -7,6 +7,8 @@
 
 ### [使用教程](https://meta.appinn.net/t/android-easy-compile/14614)
 
-#### 适用于Windows
+#### 适用于Windows x64 平台
 
 platform-tools版本 : r29.0.4-windows
+
+![d](https://gitee.com/aaronfeng0711/Waifu2x-Extension-GUI/raw/master/donate_new.jpg)
