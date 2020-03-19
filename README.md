@@ -5,6 +5,8 @@
 
 已在 三星S7 edge 国行版本通过测试.
 
+### [使用教程](https://meta.appinn.net/t/android-easy-compile/14614)
+
 #### 适用于Windows
 
 platform-tools版本 : r29.0.4-windows
